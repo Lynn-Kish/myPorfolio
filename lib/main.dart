@@ -1,9 +1,12 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'about_screen.dart';
 import 'experience_screen.dart';
 import 'projects_screen.dart';
 import 'certificates_screen.dart';
-import 'splash_screen.dart';  // Assuming you have this file
+import 'splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,13 +22,22 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SplashScreen(),  // Ensure SplashScreen is correctly defined
+      home: const SplashScreen(),
     );
   }
 }
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  // Function to launch a URL
+  void _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +48,7 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () {
-              Scaffold.of(context).openDrawer();  // Open the drawer when the menu icon is pressed
+              Scaffold.of(context).openDrawer();
             },
           ),
         ],
@@ -61,7 +73,7 @@ class HomeScreen extends StatelessWidget {
             ListTile(
               title: const Text('Home'),
               onTap: () {
-                Navigator.of(context).pop();  // Close the drawer
+                Navigator.of(context).pop();
               },
             ),
             ListTile(
@@ -76,7 +88,8 @@ class HomeScreen extends StatelessWidget {
               title: const Text('Experience'),
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const ExperienceScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const ExperienceScreen()),
                 );
               },
             ),
@@ -84,7 +97,8 @@ class HomeScreen extends StatelessWidget {
               title: const Text('My Projects'),
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const ProjectsScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const ProjectsScreen()),
                 );
               },
             ),
@@ -92,7 +106,8 @@ class HomeScreen extends StatelessWidget {
               title: const Text('Certificates'),
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const CertificatesScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const CertificatesScreen()),
                 );
               },
             ),
@@ -105,7 +120,7 @@ class HomeScreen extends StatelessWidget {
           children: <Widget>[
             const CircleAvatar(
               radius: 50,
-              backgroundImage: AssetImage('assets/profile.jpg'),
+              backgroundImage: AssetImage('assets/'),
             ),
             const SizedBox(height: 20),
             const Text(
@@ -114,15 +129,43 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Text(
-              'Science and Technology Enthusiast\nFlutter Developer',
+              'Flutter Developer\nAI Enthusiast',
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Future navigation to projects or other screens
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => const ProjectsScreen()),
+                );
               },
-              child: const Text('View My Projects'),
+              child: const Text('SEE MY WORK'),
+            ),
+            const SizedBox(height: 30),
+            // Social Media Links Section
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.code),
+                  onPressed: () {
+                    _launchURL('https://github.com/Lynn-Kish');
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.business),
+                  onPressed: () {
+                    _launchURL('https://linkedin.com/in/Lynn-Kish');
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.alternate_email),
+                  onPressed: () {
+                    _launchURL('https://twitter.com/Lynn-Kish');
+                  },
+                ),
+              ],
             ),
           ],
         ),
